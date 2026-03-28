@@ -1,11 +1,14 @@
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
+let imageGallery = new SimpleLightbox('.gallery-item a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
+
 const gallery = document.querySelector('.gallery');
 const loader = document.querySelector('.loader');
-const loadMoreBtn = document.querySelector('.load-more');
-
-const lightbox = new SimpleLightbox('.gallery a');
+export const btnMore = document.querySelector('.btn-more');
 
 export function createGallery(images) {
   const markup = images
@@ -18,40 +21,36 @@ export function createGallery(images) {
         views,
         comments,
         downloads,
-      }) => `
-      
-      <li class="gallery-item">
-        <a href="${largeImageURL}">
-          <img src="${webformatURL}" alt="${tags}" loading="lazy" />
-        </a>
-      
-      
-        <div class="info">
-          <ul class="info-list">
-            <li class="info-item">
-              <h4 class="title-info-item">Likes</h4>
-              <p class="info-item-value">${likes}</p>
-            </li>
-            <li class="info-item">
-              <h4 class="title-info-item">Views</h4>
-              <p class="info-item-value">${views}</p>
-            </li>
-            <li class="info-item">
-              <h4 class="title-info-item">Comments</h4>
-              <p class="info-item-value">${comments}</p>
-            </li>
-            <li class="info-item">
-              <h4 class="title-info-item">Downloads</h4>
-              <p class="info-item-value">${downloads}</p>
-            </li>
-          </ul>
-        </div>
-      </li>`
-
+      }) => {
+        return `<li class="gallery-item"><a class="gallery-link" href="${largeImageURL}">
+          <img class="gallery-image" src="${webformatURL}" alt="${tags}" width="360" />
+          <ul class="img-info">
+  <li class="img-info-item">
+    <p class="img-info-name">Likes</p>
+    <p class="img-info-value">${likes}</p>
+  </li>
+  <li class="img-info-item">
+    <p class="img-info-name">Views</p>
+    <p class="img-info-value">${views}</p>
+  </li>
+  <li class="img-info-item">
+    <p class="img-info-name">Comments</p>
+    <p class="img-info-value">${comments}</p>
+  </li>
+  <li class="img-info-item">
+    <p class="img-info-name">Downloads</p>
+    <p class="img-info-value">${downloads}</p>
+  </li>
+</ul>
+        </a></li>
+        `;
+      }
     )
     .join('');
+
   gallery.insertAdjacentHTML('beforeend', markup);
-  lightbox.refresh();
+
+  imageGallery.refresh();
 }
 
 export function clearGallery() {
@@ -59,17 +58,17 @@ export function clearGallery() {
 }
 
 export function showLoader() {
-  loader.classList.add('visible');
+  loader.classList.add('show');
 }
 
 export function hideLoader() {
-  loader.classList.remove('visible');
+  loader.classList.remove('show');
 }
 
 export function showLoadMoreButton() {
-  loadMoreBtn.classList.add('visible');
+  btnMore.classList.add('show-btn-more');
 }
 
 export function hideLoadMoreButton() {
-  loadMoreBtn.classList.remove('visible');
+  btnMore.classList.remove('show-btn-more');
 }
